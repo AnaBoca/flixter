@@ -1,31 +1,40 @@
 <br />
-<div class="booyah-box col-10 offset-1">
-  <h1 class="text-center"><%= @course.title %></h1>
-  <br />
-  <%= link_to 'Preview As Student...', course_path(@course), class: 'btn btn-warning float-right' %>
-  <br class="clearfix" />
 
-  <div class="text-center">
-    <%= link_to 'Add a new section...', new_instructor_course_section_path(@course), class: 'btn btn-primary btn-lg' %>
+<div class="booyah-box col-10 offset-1">
+  <h1><%= @course.title %></h1>
+  <br />
+  <div class="row">
+    <div class="col-sm-4 col-12">
+      <span class="badge badge-default">
+        <%= number_to_currency @course.cost %>
+      </span>
+
+      <% if current_user && current_user == @course.user %>
+        <br />
+        <br />
+        <%= link_to 'Administer', instructor_course_path(@course), class: 'btn btn-danger btn-large' %>
+      <% end %>
+    </div>
+
+    <div class="col-sm-8 col-12">
+      <%= @course.description %>
+    </div>
   </div>
 
-  <ul>
+  <div class="col-12">
     <% @course.sections.each do |section| %>
-      <li>
+      <div class="section">
         <%= section.title %>
-        <%= link_to 'New Lesson', new_instructor_section_lesson_path(section), class: 'float-right btn btn-primary btn-sm' %>
-        <ul>
-          <% section.lessons.each do |lesson| %>
-            <li>
+        <% section.lessons.each do |lesson| %>
+          <div class="lesson">
+            <%= link_to lesson_path(lesson) do %>
               <b><%= lesson.title %></b>
               -
               <%= lesson.subtitle %>
-            </li>
-          <% end %>
-        </ul>
-        <br class="clearfix" />
-      </li>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
     <% end %>
-  </ul>
-
+  </div>
 </div>
